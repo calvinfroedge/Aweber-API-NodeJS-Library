@@ -1,9 +1,9 @@
 {
-    "name": "node-aweber",
+    "name": "Aweber-API-NodeJS-Library",
     "version": "0.0.1",
     "repository": {
         "type": "git",
-        "url": "git://github.com/calvinfroedge/node-aweber.git"
+        "url": "git://github.com/calvinfroedge/aweber-api-node-js-library.git"
     },
     "dependencies": {
         "unirest" : "0.4.0"
