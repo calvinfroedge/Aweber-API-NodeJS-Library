@@ -52,7 +52,7 @@ var accessToken = NA.accessToken(oauth_token, oauth_verifier, token_secret_from_
 
 ...And you'll now have an `oauth_token_secret` and `oauth_token` you can use for further requests!
 
-### Making API calls
+## Step 3 - Make API calls
 
 ```
 var apiClient = NA.api(token, tokenSecret);
