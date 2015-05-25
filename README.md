@@ -4,6 +4,12 @@ This library was created to provide Oauth and API request functionality between 
 
 You'll also find a complete, working sample application running express in example.js. Install express using `npm`, I intentionally left it out of the project dependencies.
 
+To run the example app:
+
+```
+consumer_key=YOUR_KEY consumer_secret=YOUR_SECRET node example.js
+```
+
 ## Step 1 - Create App, Get Credentials
 
 - Go to [AWeber Labs](https://labs.aweber.com/) and get a free development account.
