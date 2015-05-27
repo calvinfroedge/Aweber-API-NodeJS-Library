@@ -26,7 +26,7 @@ This is the URL Aweber will send the user back to during each step of the proces
 ### Getting a request token
 
 ```
-var NodeAweber = require('node-aweber');
+var NodeAweber = require('aweber-api-nodejs');
 
 var NA = new NodeAweber(CONSUMER_KEY, CONSUMER_SECRET, CALLBACK_URL);
 
