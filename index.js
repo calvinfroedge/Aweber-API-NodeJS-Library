@@ -2,6 +2,7 @@ module.exports = function(consumerKey, consumerSecret, callbackURL){
   var oauth = require('./src/oauth');
   var unirest = require('unirest');
   var qs = require('querystring');
+  var clone = require('clone');
 
   var commonParams = function(){
     return {
@@ -37,7 +38,7 @@ module.exports = function(consumerKey, consumerSecret, callbackURL){
     requestToken: function(callback){
       var url = 'https://auth.aweber.com/1.0/oauth/request_token';
       var params = commonParams();
-      
+
       params.oauth_callback = callbackURL;
       params.oauth_token = '';
       params.oauth_signature = oauth.v1.get_signature('POST', url, params, consumerSecret);
@@ -79,12 +80,16 @@ module.exports = function(consumerKey, consumerSecret, callbackURL){
           var url = 'https://api.aweber.com/1.0/'+endpoint;
 
           common = commonParams();
-          for(var k in common){
-            params[k] = common[k];
-          }
+          var patch_params = clone(params);
 
-          params.oauth_token = token;
-          params.oauth_signature = oauth.v1.get_signature(type.toUpperCase(), url, params, consumerSecret, tokenSecret);
+          if(['get', 'delete', 'put', 'post'].indexOf(type) !== -1) {
+            for(var k in common){
+              params[k] = common[k];
+            }
+
+            params.oauth_token = token;
+            params.oauth_signature = oauth.v1.get_signature(type.toUpperCase(), url, params, consumerSecret, tokenSecret);
+          }
 
           if(type == 'get' || type == 'delete'){
             unirest[type](url+'?'+qs.stringify(params)).end(function(response){
@@ -98,6 +103,19 @@ module.exports = function(consumerKey, consumerSecret, callbackURL){
 
           if(type == 'put' || type == 'post'){
             putOrPost(type, url, params, cb);
+          }
+
+          if(type == 'patch') {
+            params = common;
+            params.oauth_token = token;
+            params.oauth_signature = oauth.v1.get_signature(type.toUpperCase(), url, params, consumerSecret, tokenSecret);
+            unirest.patch(url+'?'+qs.stringify(params)).type('json').send(patch_params).end(function(response){
+              if(!response.ok){
+                cb(response.body);
+              } else {
+                cb(null, response.body);
+              }
+            });
           }
         }
       }
